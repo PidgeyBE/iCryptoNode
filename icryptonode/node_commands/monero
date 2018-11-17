@@ -18,7 +18,7 @@ monero_stop () {
     PIDOF=$(ps aux | egrep monerod.--detach | egrep  -v grep | awk '{print $2}')
     if [ -n "$PIDOF" ]; then
         echo "Stopping monero (PID = $PIDOF)"
-        $DAEMON_FILE --log-file $LOG_FILE --data-dir $BLOCKCHAIN_DIR --rpc-bind-ip 0.0.0.0 --rpc-login $DAEMON_USER:$DAEMON_PASS --rpc-bind-port $DAEMON_RPC_PORT --confirm-external-bind exit
+        $DAEMON_FILE --log-file $LOG_FILE --limit-rate 1 --data-dir $BLOCKCHAIN_DIR --rpc-bind-ip 0.0.0.0 --rpc-login $DAEMON_USER:$DAEMON_PASS --rpc-bind-port $DAEMON_RPC_PORT --confirm-external-bind exit
     fi
 }
 
@@ -29,7 +29,7 @@ monero_start () {
         exit 1
     fi
     echo "Starting monero"
-    $DAEMON_FILE --detach --db-salvage --log-file $LOG_FILE --data-dir $BLOCKCHAIN_DIR --rpc-bind-ip 0.0.0.0 --rpc-login $DAEMON_USER:$DAEMON_PASS --rpc-bind-port $DAEMON_RPC_PORT --confirm-external-bind
+    $DAEMON_FILE --detach --db-salvage --limit-rate 1 --log-file $LOG_FILE --data-dir $BLOCKCHAIN_DIR --rpc-bind-ip 0.0.0.0 --rpc-login $DAEMON_USER:$DAEMON_PASS --rpc-bind-port $DAEMON_RPC_PORT --confirm-external-bind
 }
 
 monero_restart () {
